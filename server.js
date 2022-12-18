@@ -1,5 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import  'express-async-errors'
 
 // middleware
 import notFoundMiddleware from './middleware/not-found.js';
