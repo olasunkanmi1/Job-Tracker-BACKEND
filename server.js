@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import  'express-async-errors'
+import morgan from 'morgan'
 
 // middleware
 import notFoundMiddleware from './middleware/not-found.js';
@@ -17,6 +18,9 @@ import jobsRouter from './routes/jobsRoutes.js';
 const app = express();
 dotenv.config()
 
+if(process.env.NODE_ENV !== 'production') {
+    app.use(morgan('dev'))
+} 
 app.use(cors())
 app.use(express.json())
 
