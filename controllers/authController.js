@@ -1,6 +1,7 @@
 import User from '../models/User.js'
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError, UnAuthenticatedError } from '../errors/index.js'
+import attachCookie from '../utils/attachCookie.js';
 
 const register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -15,7 +16,9 @@ const register = async (req, res) => {
     }
     
     const user = await User.create({ name, email, password });
-    const token = user.createJWT()
+    const token = user.createJWT();
+    attachCookie({res, token});
+
     res.status(StatusCodes.CREATED).json({
         user: {
             email: user.email, 
@@ -23,7 +26,6 @@ const register = async (req, res) => {
             lastName: user.lastName,
             location: user.location
         }, 
-        token, 
         location: user.location
     })
 }
@@ -45,15 +47,14 @@ const login = async (req, res) => {
     if(!isPasswordCorrect) {
         throw new UnAuthenticatedError('Invalid Credentials');
     }
-    const token = user.createJWT()
     user.password = undefined
+    const token = user.createJWT()
+
+    attachCookie({res, token});
     res.status(StatusCodes.OK).json({
         user, 
-        token, 
         location: user.location
     })
-
-    res.send('login User')
 }
 
 const update = async (req, res) => {
@@ -70,13 +71,18 @@ const update = async (req, res) => {
     user.location = location
 
     await user.save()
-    const token = user.createJWT()
+    const token = user.createJWT();
+    attachCookie({res, token});
 
     res.status(StatusCodes.OK).json({
         user, 
-        token, 
         location: user.location
     })
 }
 
-export { register, login, update }
+const getCurrentUser = async (req, res) => {
+    const user = await User.findOne({ _id: req.user.userId });
+    res.status(StatusCodes.OK).json({ user, location: user.location });
+};
+
+export { register, login, update, getCurrentUser }

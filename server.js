@@ -3,6 +3,10 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import  'express-async-errors'
 import morgan from 'morgan'
+import helmet from 'helmet';
+import xss from 'xss-clean';
+import mongoSanitize from 'express-mongo-sanitize';
+import cookieParser from 'cookie-parser';
 
 // middleware
 import notFoundMiddleware from './middleware/not-found.js';
@@ -22,8 +26,16 @@ dotenv.config()
 if(process.env.NODE_ENV !== 'production') {
     app.use(morgan('dev'))
 } 
-app.use(cors())
+const corsOptions = {
+    origin: true,
+    credentials: true,
+};
+app.use(cors(corsOptions))
 app.use(express.json())
+app.use(helmet());
+app.use(xss());
+app.use(mongoSanitize());
+app.use(cookieParser());
 
 app.get('/', (req, res) => {
     res.send('Welcome!')
