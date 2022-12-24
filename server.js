@@ -27,7 +27,8 @@ if(process.env.NODE_ENV !== 'production') {
     app.use(morgan('dev'))
 } 
 const corsOptions = {
-    origin: true,
+    // origin: "https://job-tracker-ru7r.onrender.com",
+    origin: "http://localhost:3000",
     credentials: true,
 };
 app.use(cors(corsOptions))

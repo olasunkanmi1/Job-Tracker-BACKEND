@@ -6,8 +6,10 @@ const attachCookie = ({ res, token }) => {
     expires: new Date(Date.now() + oneDay),
     // secure: process.env.NODE_ENV === 'production',
     secure: true,
-    sameSite: 'none'
-  });
+    sameSite: 'none',
+    domain: 'https://trackyourjobs.vercel.app/'
+  })
+  res.send()
 };
 
 export default attachCookie;
