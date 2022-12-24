@@ -27,8 +27,7 @@ if(process.env.NODE_ENV !== 'production') {
     app.use(morgan('dev'))
 } 
 const corsOptions = {
-    // origin: "https://job-tracker-ru7r.onrender.com",
-    origin: "http://localhost:3000",
+    origin: "https://trackyourjobs.vercel.app",
     credentials: true,
 };
 app.use(cors(corsOptions))

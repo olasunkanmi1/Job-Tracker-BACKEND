@@ -7,7 +7,7 @@ const attachCookie = ({ res, token }) => {
     // secure: process.env.NODE_ENV === 'production',
     secure: true,
     sameSite: 'none',
-    domain: 'https://trackyourjobs.vercel.app/'
+    domain: 'https://trackyourjobs.vercel.app'
   })
   res.send()
 };
